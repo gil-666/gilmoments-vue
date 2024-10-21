@@ -1,0 +1,88 @@
+@import './base.css';
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+
+}
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+  border-radius: 10px; 
+}
+
+.header-logo{
+  border: 0;
+}
+
+.header-logo:hover{
+  background-color: hsla(0, 0%, 100%, 0);
+}
+
+
+
+.content{
+  margin-top: 1rem;
+  transition: 0.5s;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: hsla(0, 0%, 4%, 0.579)
+}
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+    color: hsla(160, 100%, 37%, 1);
+    background-color: hsla(160, 100%, 56%, 0.308);
+    box-shadow: inset 0 0 0 2px hsla(160, 100%, 37%, 1); 
+    
+    transform: scale(1.05);
+  }
+  
+}
+
+@media (prefers-color-scheme: dark) {
+  .content:hover{
+    background-color: hsl(0, 0%, 4%)
+  }
+  
+}
+
+/* cuando la ventana esta extendida */
+@media (min-width: 1024px) { 
+  body {
+    display: flex;
+    text-align: center;
+  }
+
+  .content{
+    margin-top: 0rem;
+  }
+
+  #app {
+    display: block;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+  }
+
+  header{
+    display: flex;
+    place-items: center;
+    padding: 4px;
+    margin: 4px;
+  }
+
+  .top-link{
+    margin-left: 2rem;
+    color: hsla(160, 100%, 37%, 1);
+    padding: 10px;
+
+  }
+}
