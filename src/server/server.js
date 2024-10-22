@@ -16,7 +16,7 @@ app.use(cors({
 app.use(express.json()); // To parse JSON bodies
 
 // MongoDB connection
-mongoose.connect('mongodb://192.168.1.25:27017/gilsexweb', {
+mongoose.connect('mongodb://177.230.254.9:6697/gilsexweb', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
