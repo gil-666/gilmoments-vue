@@ -6,7 +6,7 @@
     <h1>
         404
     </h1>
-    <h3>Lo sentimos, ese chingadera NO EXISTE</h3>
+    <h3>Lo sentimos, esa chingadera NO EXISTE</h3>
 </template>
 
 <style lang="css" scoped>
