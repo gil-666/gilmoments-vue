@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import Post from '../components/Post.vue';
 import { fetchPosts } from '@/service/PostService';
 import NewPost from '@/components/NewPost.vue';
+import { fetchOnlineUsers } from '@/service/AppService';
 const posts = ref([]);
 
 const setPosts = (data) => {
@@ -11,6 +12,7 @@ const setPosts = (data) => {
 
 onMounted(() => {
     fetchPosts(setPosts);
+    
 });
 function formatDate(dateString) {
 console.log("recieved date: ",dateString);

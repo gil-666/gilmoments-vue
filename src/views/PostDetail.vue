@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 import Post from '@/components/Post.vue';
 import { fetchPostByID } from '@/service/PostService';
+import CommentsPanel from '@/components/CommentsPanel.vue';
 import router from '@/router';
 const props = defineProps(['post']);
 const route = useRoute();
@@ -34,8 +35,13 @@ onMounted(async () => {
       <template #timestamp>{{ formatDate(post.createdAt) }}</template>
     </Post>
   </div>
+  <div class="comments">
+    <CommentsPanel :post="post"/>
+  </div>
 </template>
 
 <style lang="css" scoped>
-
+.comments{
+  margin-top: -17px;
+}
 </style>

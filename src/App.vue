@@ -1,27 +1,54 @@
 <script setup>
-import { ref,computed } from 'vue'
+import { ref,computed, onMounted, watch, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router';
 import HeaderTop from './components/HeaderTop.vue'
 import Home from './views/Home.vue';
-import FloatingButton from './components/NewPost.vue';
+import { fetchOnlineUsers } from './service/AppService';
+
+var socket = ref(null);
+var useronline = ref(null);
+
+const userCountRoutine = async () => {
+  const response = await fetchOnlineUsers();
+  useronline.value = response.activeConnections;
+  console.log("bruh", response);
+};
+
+let intervalId;
+onMounted(() => {
+  socket = new WebSocket('ws://localhost:5001');
+  intervalId = setInterval(userCountRoutine,1000);
+});
+
+onBeforeUnmount(() => {
+  clearInterval(intervalId);
+});
+
 const route = useRoute();
 const enableReturn = computed(() => {
   return route.name !== 'Home';
 });
+const apiUrl = import.meta.env.VITE_API_URL;
+
+
 
 </script>
 
 <template>
-  <HeaderTop :showReturn="enableReturn"/>
+  <HeaderTop :showReturn="enableReturn" :usersOnline="useronline"/>
+  
   <div class="content">
     <router-view />
 
   </div>
-
-
 </template>
 
 <style scoped>
+.title-pub{
+  padding-top: 10px;
+  /* padding-inline-start: 10px; */
+}
+
 button {
   font-weight: bold;
 }

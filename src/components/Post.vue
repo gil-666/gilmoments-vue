@@ -52,10 +52,10 @@ watch(likeCounter, () => {
 });
 
 
-let intervalId; //FETCH LIKES EVERY 2 SECOND
+let intervalId; //FETCH LIKES EVERY 1 SECOND
 onMounted(() => {
   fetchLikes();
-  intervalId = setInterval(fetchLikes, 2000);
+  intervalId = setInterval(fetchLikes, 1000);
 });
 
 onBeforeUnmount(() => {
@@ -67,6 +67,8 @@ const formatLikes = (likes) => {
   if (likes < 1000000) return Math.floor(likes / 100) / 10 + 'K'; // Round down to one decimal place
   return Math.floor(likes / 100000) / 10 + 'M'; // Round down to one decimal place
 };
+
+
 </script>
 <template>
   <div class="container">
@@ -98,6 +100,7 @@ const formatLikes = (likes) => {
 </template>
 
 <style scoped>
+
 .name {
   text-align: start;
   user-select: none;
@@ -108,6 +111,11 @@ const formatLikes = (likes) => {
   border: unset;
   color: unset;
   padding: unset;
+}
+
+.details a {
+    color: blue; /* Default link color */
+    text-decoration: none; /* Remove underline */
 }
 
 .comment-link:hover {
@@ -143,6 +151,12 @@ const formatLikes = (likes) => {
   font-size: 0.9rem;
   color: gray;
   user-select: none;
+}
+
+@media (prefers-color-scheme: light) {
+  .timestamp{
+    color: hsla(160, 100%, 37%, 1);
+  }
 }
 
 .container {

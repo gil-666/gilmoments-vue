@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps,ref } from 'vue';
 import Icon from './icons/IconDocumentation.vue'
 import HeaderLink from './HeaderLink.vue';
 
@@ -7,6 +7,10 @@ const props = defineProps({
     showReturn: {
         type: Boolean,
         default: false,
+    },
+    usersOnline: {
+        type: Number,
+        default: 0,
     },
 });
 </script>
@@ -35,10 +39,29 @@ const props = defineProps({
         <!-- <HeaderLink>
             <template #button>Alerta</template>
         </HeaderLink> -->
+       
+        
     </header>
+    <p class="user-counter" v-show="usersOnline" :class="{ 'fade-in': usersOnline }">
+            {{ usersOnline }} usuario{{ usersOnline !== 1 ? 's' : '' }} en linea{{ usersOnline !== 1 ? '' : ' (tú)' }}
+        </p>
 </template>
 
 <style lang="css" scoped>
+.user-counter {
+    padding: 10px;
+    padding-top: 10px;
+    font-size: 16px;
+    height: 20px; /* Set a fixed height to avoid layout shift */
+    transition: opacity 0.8s ease-in; 
+    opacity: 0; /* Initially hidden */
+    padding-bottom: 35px;
+}
+
+/* Fade-in effect */
+.user-counter.fade-in {
+    opacity: 1; /* Show when the class is added */
+}
 .logo-link {
     color: #ff11a4;
     transition: 0.5s;

@@ -2,21 +2,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const http = require('http');
+const websocket = require('ws');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
-app.use(cors({
-    origin: [
-        'http://192.168.1.8:5174', // Local frontend
-        'http://177.230.254.9:5173' // External frontend
-    ],
-    methods: ['GET', 'POST', 'DELETE', 'PUT'],
-}));
+const PORT2 = process.env.PORT || 5001;
+const server = http.createServer(app);
+const wss = new websocket.Server({ server });
+let activeConnections = 0;
+app.use(cors());
 app.use(express.json()); // To parse JSON bodies
 
 // MongoDB connection
-mongoose.connect('mongodb://177.230.254.9:6697/gilsexweb', {
+mongoose.connect('mongodb+srv://proyectodb:cucsur@cluster0.s4l9b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/gilsexweb', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
@@ -33,8 +32,32 @@ const PostSchema = new mongoose.Schema({
     likes: { type: Number, default: 0 }
 },{timestamps: true});
 
+const CommentSchema = new mongoose.Schema({
+    post_id:{type: mongoose.Schema.Types.ObjectId, ref: 'Post'},
+    user_id:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    text: { type: String, required: true }
+});
+
 const User = mongoose.model('User', UserSchema);
 const Post = mongoose.model('Post', PostSchema);
+const Comment = mongoose.model('Comment', CommentSchema);
+
+//get connect number
+wss.on('connection', (ws) => {
+    activeConnections++; // Increment active connections count
+    console.log(`New connection. Total active connections: ${activeConnections}`);
+
+    // Handle disconnection
+    ws.on('close', () => {
+        activeConnections--; // Decrement active connections count
+        console.log(`Connection closed. Total active connections: ${activeConnections}`);
+    });
+});
+
+app.get('/api/active-connections', (req, res) => {
+    res.json({ activeConnections });
+});
+
 
 // Get all posts with user information
 app.get('/api/posts', async (req, res) => {
@@ -44,6 +67,18 @@ app.get('/api/posts', async (req, res) => {
         res.status(200).json(posts);
     } catch (err) {
         res.status(500).json(err);
+    }
+});
+
+app.get('/api/comments/:id', async(req, res) =>{
+    const postId = req.params.id;
+    console.log("got comments for post ", postId);
+    try{
+       const comment = await Comment.find({ post_id: postId }).populate('user_id', 'name');
+       res.status(200).json(comment);
+    }catch(err){
+        res.status(500).json(err);
+        console.log(err);
     }
 });
 
@@ -88,7 +123,7 @@ app.post('/api/posts', async (req, res) => {
 //GET LIKES
 
 app.get('/api/posts/:id/likes', async (req, res) => {
-    console.log("Fetching likes for post with ID:", req.params.id);
+    // console.log("Fetching likes for post with ID:", req.params.id);
     const postId = req.params.id;
 
     try {
@@ -138,8 +173,12 @@ app.delete('/api/posts/:id/likes', async (req, res) => {
     }
 });
 
-  
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+server.listen(PORT2, () => {
+    console.log(`WEBSOCKET IS RUNNING ON ws://localhost:${PORT2}`);
 });
