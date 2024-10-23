@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite --host\" \"node src/server/server.js\"",
+    "dev": "concurrently \"vite --host\" \"node server.js\" \"npm install -g express cors mongoose ws\"",
     "build": "vite build",
     "preview": "vite preview"
   },
