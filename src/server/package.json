@@ -12,7 +12,12 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
+    "mongoose": "^8.7.2",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
     "express": "^4.21.1",
+    "cors": "^2.8.5",
     "mongoose": "^8.7.2",
     "ws": "^8.18.0"
   }
