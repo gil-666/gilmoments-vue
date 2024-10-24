@@ -44,12 +44,11 @@ const Comment = mongoose.model('Comment', CommentSchema);
 
 //get connect number
 wss.on('connection', (ws) => {
-    activeConnections++; // Increment active connections count
+    activeConnections++; // Increment active connection
     console.log(`New connection. Total active connections: ${activeConnections}`);
 
-    // Handle disconnection
     ws.on('close', () => {
-        activeConnections--; // Decrement active connections count
+        activeConnections--; // Decrement active connection
         console.log(`Connection closed. Total active connections: ${activeConnections}`);
     });
 });
