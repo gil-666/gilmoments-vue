@@ -39,12 +39,12 @@ async function handleSubmit() {
                 <h2 id="overlay-title">nueva publicación</h2>
                 <div>
                     <label for="name">nombre:</label><br>
-                    <input class="new-post-fld" type="text" id="name" v-model="formData.name" required />
+                    <v-textarea :rows="1" type="text" id="name" v-model="formData.name" required></v-textarea>
                 </div>
                 <br>
                 <div>
                     <label for="text">contenido:</label><br>
-                    <textarea class="new-post-fld" id="text" v-model="formData.text" required></textarea>
+                    <v-textarea id="text" v-model="formData.text" no-resize required></v-textarea>
                 </div>
                 <br>
                 <button class="btn-submit" type="submit">publicar</button>
@@ -100,15 +100,15 @@ async function handleSubmit() {
 .new-post-fld{
     background-color: hsla(0, 0%, 8%, 0.682);
     color: white;
-    border-color: rgb(255, 255, 255);
+    /* border-color: rgb(255, 255, 255);
     border-width: 0.5px;
     border-style: solid;
-    border-radius: 5px;
-    min-height: 100px;
+    border-radius: 5px; */
+    /* min-height: 100px;
     height: 100px;
     min-width: 200px;
     max-width: 400px;
-    max-height: 200px;
+    max-height: 200px; */
     text-align: left;
 }
 

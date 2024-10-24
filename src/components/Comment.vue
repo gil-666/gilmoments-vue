@@ -4,6 +4,7 @@
 
 <template>
     <div class="comment-container">
+        <i><slot name="icon"></slot></i>
         <p class="comment-user"><slot name="user"></slot></p>
         <p class="comment-text"><slot name="content"></slot></p>
     </div>
@@ -11,11 +12,20 @@
 
 <style lang="css" scoped>
 .comment-container{
+    /* font-size: 16px; */
     text-align: start;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
+    /* display: flex; */
+    padding: 10px;
+  border: 1px 0px 0px 0px;
+  border-width: 1px;
+  border-left: 0px;
+  border-color: rgb(32, 32, 32);
+  border-right: 0px;
+  border-style: solid;
 }
 .comment-user{
-    padding-left: 10px;
+    /* padding-left: 10px; */
     font-style: italic;
     color: white;
 }

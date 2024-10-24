@@ -26,7 +26,6 @@ onMounted(async () => {
     }
 });
 </script>
-
 <template>
     <div class="post-detail" v-if="post">
     <Post :post="post" :in-detail-mode="true">
