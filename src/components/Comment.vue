@@ -38,6 +38,7 @@
 
 .comment-timestamp{
     text-align: end;   
+    user-select: none;
 }
 .comment-user{
     /* padding-left: 10px; */
