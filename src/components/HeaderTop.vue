@@ -91,6 +91,7 @@ const props = defineProps({
     box-shadow: none;
 }
 
+
 .no-hover{
     opacity: 100%;
 

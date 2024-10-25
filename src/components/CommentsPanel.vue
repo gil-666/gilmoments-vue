@@ -6,7 +6,7 @@ import Comment from './Comment.vue';
 import { fetchPostComments } from '@/service/CommentService';
 import IconSend from './icons/IconSend.vue';
 import { delay, postComment } from '@/service/PostService';
-import { fetchOnlineUsers, formatDate } from '@/service/AppService';
+import { fetchOnlineUsers, formatDate, formatDateComment } from '@/service/AppService';
 
 const props = defineProps(['post']);
 const route = useRoute();
@@ -77,7 +77,7 @@ const submitComment = async () => {
                 </template>
                 <template #user>{{ comment.user_id.name }}</template>
                 <template #content>{{ comment.text }}</template>
-                <template #timestamp>{{ formatDate(comment.createdAt) }}</template>
+                <template #timestamp>{{ formatDateComment(comment.createdAt) }}</template>
             </Comment>
         </div>
 
