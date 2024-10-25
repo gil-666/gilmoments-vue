@@ -27,14 +27,14 @@ const props = defineProps({
             </a>
         </div>
 
-        <HeaderLink href="http://udg.mx">
-            <template #button>UDG</template>
+        <HeaderLink href="https://github.com/gil-666/gilmoments-vue">
+            <template #button>source</template>
         </HeaderLink>
         <HeaderLink href="/contact">
-            <template #button>Contacto</template>
+            <template #button>contacto</template>
         </HeaderLink>
         <HeaderLink href="https://github.com/gil-666/GilMessenger">
-            <template #button>GilMessenger</template>
+            <template #button>gilmessenger</template>
         </HeaderLink>
         <!-- <HeaderLink>
             <template #button>Alerta</template>
