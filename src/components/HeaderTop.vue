@@ -18,7 +18,7 @@ const props = defineProps({
     <header>
         <div class="logo-link">
             <a class="header-logo" href="/">
-
+                <p style="text-align: end; margin-bottom: -7px;">beta</p>
                 <h1>
                     gilmoments
                     <Icon aria-label="Documentation Icon" />
@@ -70,8 +70,15 @@ const props = defineProps({
     padding: 10px;
     padding-top: 1px;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
 }
+@media (prefers-color-scheme: light){
+    .user-counter{
+        color: rgb(0, 104, 69);
+    }
 
+}
 
 
 .return-label {

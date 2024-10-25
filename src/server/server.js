@@ -114,7 +114,7 @@ app.post('/api/posts', async (req, res) => {
         const post = new Post({ user_id: user._id, text });
         await post.save(); // Save the post to the database
 
-        res.status(201).json(post); // Respond with the created post
+        res.status(201).json(post); 
     } catch (err) {
         console.error('Error creating post serverjs:', err);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -131,7 +131,7 @@ app.post('/api/comments', async (req, res) => {
         const comment = new Comment({post_id: post_id, user_id: user_id, text});
         await comment.save();
 
-        res.status(201).json(comment); // Respond with the created post
+        res.status(201).json(comment); 
     } catch (err) {
         console.error('Error creating comment serverjs:', err);
         res.status(500).json({ message: 'Internal Server Error' });
