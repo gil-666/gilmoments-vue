@@ -3,38 +3,36 @@ import { ref } from 'vue';
 const apiUrl = import.meta.env.VITE_API_URL;
 import IconNew from './icons/IconNew.vue';
 import axios from 'axios';
-import { fetchPosts } from '@/service/PostService';
+import { fetchPosts, postComment } from '@/service/PostService';
 const showForm = ref(false);
+const btnLoadingState = ref(false);
 const formData = ref({ name: '', text: '' }); // Define form data
 function sas() {
     showForm.value = !showForm.value; // Toggle the form visibility
 }
 const props = defineProps(['setPosts']);
 async function handleSubmit() {
+    btnLoadingState.value = true;
     try {
-        // Send the post data to the server
-        const response = await axios.post(`${apiUrl}/api/posts`, {
-            name: formData.value.name.toLowerCase(),
-            text: formData.value.text,
-        });
-        await fetchPosts(props.setPosts);
-        console.log('Post created:', response.data); // Log the response
+        await postComment(formData, props);
         showForm.value = false; // Close the form after submission
         formData.value = { name: '', text: '' }; // Reset form fields
-    } catch (error) {
-        console.error('Error creating post:', error); // Log any errors
-    } 
+    }catch(error){
+        console.log("handleSubmit: ", error)
+    }finally{
+        btnLoadingState.value = false;
+    }
     
 }
 </script>
 
 <template>
     <div>
-    <div class="button" @click="sas">
-        <IconNew />
-    </div>
-     <div v-if="showForm" class="overlay" @click="sas">
-        
+        <div class="button" @click="sas">
+            <IconNew />
+        </div>
+        <div v-if="showForm" class="overlay" @click="sas">
+
             <form class="new-post" @submit.prevent="handleSubmit" @click.stop>
                 <h2 id="overlay-title">nueva publicación</h2>
                 <div>
@@ -47,30 +45,30 @@ async function handleSubmit() {
                     <v-textarea id="text" v-model="formData.text" no-resize required></v-textarea>
                 </div>
                 <br>
-                <button class="btn-submit" type="submit">publicar</button>
+                <v-btn :loading="btnLoadingState" class="btn-submit" type="submit">publicar</v-btn>
             </form>
             <h2 id="overlay-note">presiona afuera para salir</h2>
-    </div>
+        </div>
     </div>
 </template>
 
 <style lang="css" scoped>
-.btn-submit{
+.btn-submit {
     text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  box-shadow: inset 0 0 0 2px hsla(0, 0%, 55%, 0.682);
-  background-color: black;
-  transition: 0.4s;
-  font-size: 11pt;
-  padding: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-style: none;
-  cursor: pointer;
-  border-radius: 10px; 
+    color: hsla(160, 100%, 37%, 1);
+    box-shadow: inset 0 0 0 2px hsla(0, 0%, 55%, 0.682);
+    background-color: black;
+    transition: 0.4s;
+    font-size: 11pt;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-style: none;
+    cursor: pointer;
+    border-radius: 10px;
 }
 
-#overlay-title{
+#overlay-title {
     margin-top: -120px;
     position: fixed;
     text-align: center;
@@ -80,24 +78,25 @@ async function handleSubmit() {
 
 }
 
-#overlay-note{
+#overlay-note {
     position: fixed;
     margin-bottom: -500px;
     font-size: 9pt;
-    color: rgba(116, 116, 116, 0.596);
+    color: rgb(240, 240, 240);
 }
-@media (hover: hover){
-    .btn-submit:hover{
+
+@media (hover: hover) {
+    .btn-submit:hover {
         background-color: hsla(160, 100%, 37%, 0.2);
-    color: hsla(160, 100%, 37%, 1);
-    background-color: hsla(160, 100%, 56%, 0.308);
-    box-shadow: inset 0 0 0 2px hsla(160, 100%, 37%, 1); 
-    
-    transform: scale(1.05);
+        color: hsla(160, 100%, 37%, 1);
+        background-color: hsla(160, 100%, 56%, 0.308);
+        box-shadow: inset 0 0 0 2px hsla(160, 100%, 37%, 1);
+
+        transform: scale(1.05);
     }
 }
 
-.new-post-fld{
+.new-post-fld {
     background-color: hsla(0, 0%, 8%, 0.682);
     color: white;
     /* border-color: rgb(255, 255, 255);
@@ -112,16 +111,17 @@ async function handleSubmit() {
     text-align: left;
 }
 
-#name{
+#name {
     max-height: 25px;
     min-height: 25px;
 }
-.button{
+
+.button {
     border: 10px;
     border-style: solid;
     border-radius: 70px;
     place-content: center;
-    border-color:hsla(160, 100%, 37%, 1);
+    border-color: hsla(160, 100%, 37%, 1);
     background-color: hsla(160, 100%, 37%, 1);
     cursor: pointer;
     width: 70px;
@@ -130,7 +130,7 @@ async function handleSubmit() {
     box-shadow: 0 0px 10px 1px hsl(0, 0%, 0%);
 }
 
-.new-post{
+.new-post {
 
     position: fixed;
     text-align: start;
@@ -138,22 +138,27 @@ async function handleSubmit() {
 
     z-index: 3;
     background: fixed;
-    background-color: hsla(0, 0%, 8%, 0.682);
+    background-color: hsla(0, 0%, 8%, 0.911);
     border-radius: 20px;
 }
+
 .overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Semi-transparent background */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2; /* Ensure it's above other content */
+    z-index: 2;
+    /* Ensure it's above other content */
 }
+
 form {
-    margin-top: 20px; /* Space between button and form */
+    margin-top: 20px;
+    /* Space between button and form */
 }
 </style>

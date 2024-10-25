@@ -36,7 +36,7 @@ const CommentSchema = new mongoose.Schema({
     post_id:{type: mongoose.Schema.Types.ObjectId, ref: 'Post'},
     user_id:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     text: { type: String, required: true }
-});
+},{timestamps: true});
 
 const User = mongoose.model('User', UserSchema);
 const Post = mongoose.model('Post', PostSchema);
@@ -95,6 +95,7 @@ app.get('/api/posts/:id', async (req, res) => {
     }
 });
 
+//CREATE POST
 app.post('/api/posts', async (req, res) => {
     console.log('Received POST request:', req.body);
     const { name, text } = req.body; // Expecting { name: 'User Name', text: 'Post content' }
@@ -116,6 +117,23 @@ app.post('/api/posts', async (req, res) => {
         res.status(201).json(post); // Respond with the created post
     } catch (err) {
         console.error('Error creating post serverjs:', err);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+//CREATE COMMENT
+app.post('/api/comments', async (req, res) => {
+    console.log('Received POST request:', req.body);
+    const { post_id, user_id, text } = req.body;
+
+    try {
+
+        const comment = new Comment({post_id: post_id, user_id: user_id, text});
+        await comment.save();
+
+        res.status(201).json(comment); // Respond with the created post
+    } catch (err) {
+        console.error('Error creating comment serverjs:', err);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { RouterView } from 'vue-router/dist/vue-router.cjs';
 const apiUrl = import.meta.env.VITE_API_URL;
+export const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms)); //for debugging slow networks
 
 export const fetchPosts = async (setPosts) => {
     try {
@@ -21,3 +22,17 @@ export const fetchPostByID = async (postId) => {
         throw error; // Propagate the error
     }
 };
+
+export const postComment = async (formData) =>{
+    try {
+        // Send the post data to the server
+        const response = await axios.post(`${apiUrl}/api/comments`, {
+            post_id: formData.post_id,
+            user_id: formData.user_id,
+            text: formData.text,
+        });
+        console.log('Post created:', response.data); // Log the response
+    } catch (error) {
+        console.error('Error creating post:', error); // Log any errors
+    } 
+}

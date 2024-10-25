@@ -1,43 +1,59 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import Post from '../components/Post.vue';
-import { fetchPosts } from '@/service/PostService';
+import { fetchPosts, delay } from '@/service/PostService';
 import NewPost from '@/components/NewPost.vue';
-import { fetchOnlineUsers } from '@/service/AppService';
+import { fetchOnlineUsers, formatDate } from '@/service/AppService';
 const posts = ref([]);
+const loaded = ref(false);
 
 const setPosts = (data) => {
     posts.value = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 };
 
-onMounted(() => {
-    fetchPosts(setPosts);
+onMounted(async() => {
+    loaded.value = false;
+    try{
+      await fetchPosts(setPosts);
+    }catch(error){
+      console.log("error loading posts: ", error)
+    }finally{
+      console.log("loaded!");
+      loaded.value = true;
+    }
     
 });
-function formatDate(dateString) {
-console.log("recieved date: ",dateString);
-  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-  return new Date(dateString).toLocaleString(undefined, options);
-}
+
 </script>
 
 <script>
 
 </script>
 <template>
-  <div v-for="post in posts" :key="post._id">
+  <div class="loading-container">
+    <v-progress-circular indeterminate v-if="!loaded" style="display: block; text-align: center;"></v-progress-circular>
+  </div>
+  
+  <div v-if="loaded" v-for="post in posts" :key="post._id">
+    
     <Post :post="post">
       <template #name>{{ post.user_id.name }}</template>
       <template #content>{{ post.text }}</template>
       <template #timestamp>{{ formatDate(post.createdAt) }}</template>
     </Post>
   </div>
+
   <div class="new-post">
     <NewPost :setPosts="setPosts"/>
   </div>
 </template>
 
 <style lang="css" scoped>
+.loading-container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
 .new-post{
   position: fixed;
   z-index: 2;

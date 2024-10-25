@@ -5,8 +5,13 @@
 <template>
     <div class="comment-container">
         <i><slot name="icon"></slot></i>
-        <p class="comment-user"><slot name="user"></slot></p>
+        <div class="comment-info">
+            <p class="comment-user"><slot name="user"></slot></p>
+            <p class="comment-timestamp"><slot name="timestamp"></slot></p>
+        </div>
+        
         <p class="comment-text"><slot name="content"></slot></p>
+        
     </div>
 </template>
 
@@ -23,6 +28,15 @@
   border-color: rgb(32, 32, 32);
   border-right: 0px;
   border-style: solid;
+}
+.comment-info{
+    display: flex;
+    justify-content: space-between;
+    width: 100%; 
+}
+
+.comment-timestamp{
+    text-align: end;   
 }
 .comment-user{
     /* padding-left: 10px; */

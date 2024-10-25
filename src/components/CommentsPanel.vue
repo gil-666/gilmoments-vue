@@ -1,23 +1,48 @@
 <script setup>
+
 import { defineProps, ref, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-const props = defineProps(['post']);
-const route = useRoute();
 import Comment from './Comment.vue';
 import { fetchPostComments } from '@/service/CommentService';
 import IconSend from './icons/IconSend.vue';
+import { delay, postComment } from '@/service/PostService';
+import { fetchOnlineUsers, formatDate } from '@/service/AppService';
+
+const props = defineProps(['post']);
+const route = useRoute();
 const comments = ref(null);
+const comment = ref(''); // typed in text area
 const CommentsOpen = ref(false);
+const btnLoadingState = ref(false);
+const postId = ref('');
 
 onMounted(async () => {
-    const postId = route.params.id; // Get the post ID from route parameters
+    postId.value = route.params.id; // Get the post ID from route parameters
     try {
-        comments.value = await fetchPostComments(postId); // Fetch the post
+        comments.value = await fetchPostComments(postId.value); // Fetch the post
     } catch (error) {
         console.error('Error fetching post:', error);
-        router.push('/404');
     }
 });
+
+const submitComment = async () => {
+    if (comment.value.trim() === '') {
+        alert("escribe algo!");
+        return;
+    }
+    btnLoadingState.value = true;
+    try {
+        await postComment({ post_id: postId.value, user_id: "671703048af61f15cf83dc80", text: comment.value });
+        console.log('Submitted comment:', comment.value);
+        comment.value = '';
+    } catch (error) {
+        alert(error)
+    } finally {
+        comments.value = await fetchPostComments(postId.value);
+        btnLoadingState.value = false;
+    }
+
+};
 </script>
 
 <template>
@@ -29,17 +54,19 @@ onMounted(async () => {
 
         <hr class="solid">
         <div class="new-comment">
-            <v-textarea auto-grow :rows="3" counter persistent-counter maxlength="200" :max-rows="4"
-                label="comentario nuevo" no-resize placeholder="escribe un comentario..." name="comment-field"
-                id="comment-field">
-                <template v-slot:counter="{ value, max }">
-                    <span class="custom-counter">{{ value }} / {{ max }}</span>
-                </template>
-            </v-textarea>
-            <v-btn small class="new-comment-btn" style="text-transform: none; box-shadow: none; color: white;"
-                color="rgb(44, 44, 44)">
-                <IconSend></IconSend>
-            </v-btn>
+            <v-form validateOn="lazy">
+                <v-textarea v-model="comment" required auto-grow :rows="3" counter persistent-counter maxlength="200"
+                    :max-rows="4" label="comentario nuevo" no-resize placeholder="escribe un comentario..."
+                    name="comment-field" id="comment-field">
+                    <template v-slot:counter="{ value, max }">
+                        <span class="custom-counter">{{ value }} / {{ max }}</span>
+                    </template>
+                </v-textarea>
+                <v-btn @click="submitComment()" :loading="btnLoadingState" small class="new-comment-btn"
+                    style="text-transform: none; box-shadow: none; color: white;" color="rgb(44, 44, 44)">
+                    <IconSend v-if="!btnLoadingState"></IconSend>
+                </v-btn>
+            </v-form>
         </div>
 
         <br>
@@ -50,6 +77,7 @@ onMounted(async () => {
                 </template>
                 <template #user>{{ comment.user_id.name }}</template>
                 <template #content>{{ comment.text }}</template>
+                <template #timestamp>{{ formatDate(comment.createdAt) }}</template>
             </Comment>
         </div>
 
@@ -68,13 +96,16 @@ onMounted(async () => {
 
 .new-comment-btn {
     background: none;
-    width: 100px; /* Default size */
-    height: 100px; /* Default height */
-    
+    width: 100px;
+    /* Default size */
+    height: 100px;
+    /* Default height */
+
 }
 
 .comments-title {
     display: flex;
+    user-select: none;
 }
 
 .custom-counter {

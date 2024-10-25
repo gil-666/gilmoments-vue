@@ -13,3 +13,9 @@ export const fetchOnlineUsers = async () => {
         throw error; // Propagate the error
     }
 }
+
+export function formatDate(dateString) {
+    console.log("recieved date: ",dateString);
+      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      return new Date(dateString).toLocaleString(undefined, options);
+    }
