@@ -36,3 +36,19 @@ export const postComment = async (formData) =>{
         console.error('Error creating post:', error); // Log any errors
     } 
 }
+
+export const postCreate = async (formData, props) =>{
+    try {
+        // Send the post data to the server
+        const response = await axios.post(`${apiUrl}/api/posts`, {
+            name: formData.value.name.toLowerCase(),
+            text: formData.value.text,
+        });
+        await fetchPosts(props.setPosts);
+        console.log('Post created:', response.data); // Log the response
+        showForm.value = false; // Close the form after submission
+        formData.value = { name: '', text: '' }; // Reset form fields
+    } catch (error) {
+        console.error('Error creating post:', error); // Log any errors
+    } 
+}

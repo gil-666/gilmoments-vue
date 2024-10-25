@@ -3,7 +3,7 @@ import { ref } from 'vue';
 const apiUrl = import.meta.env.VITE_API_URL;
 import IconNew from './icons/IconNew.vue';
 import axios from 'axios';
-import { fetchPosts, postComment } from '@/service/PostService';
+import { fetchPosts, postComment, postCreate } from '@/service/PostService';
 const showForm = ref(false);
 const btnLoadingState = ref(false);
 const formData = ref({ name: '', text: '' }); // Define form data
@@ -14,7 +14,7 @@ const props = defineProps(['setPosts']);
 async function handleSubmit() {
     btnLoadingState.value = true;
     try {
-        await postComment(formData, props);
+        await postCreate(formData, props);
         showForm.value = false; // Close the form after submission
         formData.value = { name: '', text: '' }; // Reset form fields
     }catch(error){
