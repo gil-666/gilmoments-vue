@@ -16,7 +16,7 @@ const userCountRoutine = async () => {
 
 let intervalId;
 onMounted(() => {
-  socket = new WebSocket(`ws://${{apiUrl}}:5001`);
+  socket = new WebSocket(`ws://${{wssUrl}}:5001`);
   intervalId = setInterval(userCountRoutine,1000);
 });
 
@@ -29,7 +29,7 @@ const enableReturn = computed(() => {
   return route.name !== 'Home';
 });
 const apiUrl = import.meta.env.VITE_API_URL;
-
+const wssUrl = import.meta.env.VITE_WSS_URL;
 
 
 </script>
