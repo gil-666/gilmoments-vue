@@ -73,7 +73,7 @@ a,
   }
 
   header{
-    display: flex;
+    display: block;
     place-items: center;
     padding: 4px;
     margin: 4px;

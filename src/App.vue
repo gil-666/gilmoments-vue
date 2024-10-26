@@ -35,7 +35,10 @@ const enableReturn = computed(() => {
 </script>
 
 <template>
-  <HeaderTop :showReturn="enableReturn" :usersOnline="useronline"/>
+  <div class="header">
+    <HeaderTop :showReturn="enableReturn" :usersOnline="useronline"/>
+  </div>
+  
   
   <div class="content">
     <router-view />

@@ -12,6 +12,10 @@ const props = defineProps({
         type: Number,
         default: 0,
     },
+    loggedIn: {
+        type: Boolean,
+        default: false,
+    },
 });
 </script>
 <template>
@@ -35,6 +39,9 @@ const props = defineProps({
         </HeaderLink>
         <HeaderLink href="https://github.com/gil-666/GilMessenger">
             <template #button>gilmessenger</template>
+        </HeaderLink>
+        <HeaderLink href="/login">
+            <template #button>iniciar sesion</template>
         </HeaderLink>
         <!-- <HeaderLink>
             <template #button>Alerta</template>

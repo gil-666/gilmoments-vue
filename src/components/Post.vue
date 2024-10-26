@@ -30,9 +30,9 @@ const toggleHeart = async () => { //when like is clicked
     const url = `${apiUrl}:5000/api/posts/${props.post._id}/likes`;
     if (isHeartFilled.value) {
       await axios.post(url);// send request
-      likeCounter.value++;
+      // likeCounter.value++;
     } else {
-      likeCounter.value--;
+      // likeCounter.value--;
       await axios.delete(url);
     }
 
