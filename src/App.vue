@@ -18,7 +18,7 @@ const userCountRoutine = async () => {
 
 let intervalId;
 onMounted(() => {
-  socket = new WebSocket(`ws://${{wssUrl}}`);
+  socket = new WebSocket(`ws://${{apiUrl}}:5001`);
   intervalId = setInterval(userCountRoutine,1000);
 });
 

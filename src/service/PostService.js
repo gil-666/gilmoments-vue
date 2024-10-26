@@ -5,7 +5,7 @@ export const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms)); //
 
 export const fetchPosts = async (setPosts) => {
     try {
-        const response = await axios.get(`${apiUrl}/api/posts`);
+        const response = await axios.get(`${apiUrl}:5000/api/posts`);
         setPosts(response.data); // Use the setter to update posts
     } catch (error) {
         console.error('Error fetching posts:', error);
@@ -15,7 +15,7 @@ export const fetchPosts = async (setPosts) => {
 
 export const fetchPostByID = async (postId) => {
     try {
-        const response = await axios.get(`${apiUrl}/api/posts/${postId}`); // Ensure you use the correct endpoint
+        const response = await axios.get(`${apiUrl}:5000/api/posts/${postId}`); // Ensure you use the correct endpoint
         return response.data; // Return the post data
     } catch (error) {
         console.error('Error fetching post:', error);
@@ -26,7 +26,7 @@ export const fetchPostByID = async (postId) => {
 export const postComment = async (formData) =>{
     try {
         // Send the post data to the server
-        const response = await axios.post(`${apiUrl}/api/comments`, {
+        const response = await axios.post(`${apiUrl}:5000/api/comments`, {
             post_id: formData.post_id,
             user_id: formData.user_id,
             text: formData.text,
@@ -40,7 +40,7 @@ export const postComment = async (formData) =>{
 export const postCreate = async (formData, props) =>{
     try {
         // Send the post data to the server
-        const response = await axios.post(`${apiUrl}/api/posts`, {
+        const response = await axios.post(`${apiUrl}:5000/api/posts`, {
             name: formData.value.name.toLowerCase(),
             text: formData.value.text,
         });
