@@ -39,6 +39,7 @@ const toggleHeart = async () => { //when like is clicked
   } catch (error) {
     console.error('Error updating likes:', error);
   }finally{
+    await fetchLikes(); //fetch likes to confirm like register, wait for it to finish to avoid glitch
     likeRegistered.value = true;//when add/delete like is registered, loading stops
     triggerAnimation();
   }
