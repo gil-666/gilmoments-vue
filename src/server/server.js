@@ -12,6 +12,7 @@ const server = http.createServer(app);
 const wss = new websocket.Server({ server });
 let activeConnections = 0;
 app.use(cors());
+server.use(cors());
 app.use(express.json()); // To parse JSON bodies
 
 // MongoDB connection
