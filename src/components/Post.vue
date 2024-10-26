@@ -26,7 +26,7 @@ const toggleHeart = async () => {
   isHeartFilled.value = !isHeartFilled.value;
 
   try {
-    const url = `${apiUrl}/api/posts/${props.post._id}/likes`;
+    const url = `${apiUrl}:5000/api/posts/${props.post._id}/likes`;
     if (isHeartFilled.value) {
       likeCounter.value++;
       await axios.post(url);
