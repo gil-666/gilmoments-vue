@@ -14,7 +14,7 @@ const counterClass = ref('');
 const inDetailMode = props.inDetailMode ?? false;
 const fetchLikes = async () => {
   try {
-    const response = await axios.get(`${apiUrl}/api/posts/${props.post._id}/likes`);
+    const response = await axios.get(`${apiUrl}:5000/api/posts/${props.post._id}/likes`);
     likeCounter.value = response.data.likes;// Assume the response contains updated likes
   } catch (error) {
     console.error('Error fetching likes:', error);
