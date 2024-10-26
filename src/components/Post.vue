@@ -10,6 +10,7 @@ const props = defineProps(['post', 'inDetailMode']);//post passed from Home
 const isHeartFilled = ref(false);
 const likeCounter = ref(props.post.likes);
 const counterClass = ref('');
+const likeRegistered = ref(true);
 
 const inDetailMode = props.inDetailMode ?? false;
 const fetchLikes = async () => {
@@ -22,21 +23,24 @@ const fetchLikes = async () => {
 };
 
 
-const toggleHeart = async () => {
+const toggleHeart = async () => { //when like is clicked
   isHeartFilled.value = !isHeartFilled.value;
-
+  likeRegistered.value = false;//when like is cliked loading shows
   try {
     const url = `${apiUrl}:5000/api/posts/${props.post._id}/likes`;
     if (isHeartFilled.value) {
+      await axios.post(url);// send request
       likeCounter.value++;
-      await axios.post(url);
     } else {
       likeCounter.value--;
       await axios.delete(url);
     }
-    triggerAnimation();
+
   } catch (error) {
     console.error('Error updating likes:', error);
+  }finally{
+    likeRegistered.value = true;//when add/delete like is registered, loading stops
+    triggerAnimation();
   }
 };
 
@@ -83,7 +87,7 @@ const formatLikes = (likes) => {
     <div class="details">
       <slot name="content"></slot>
     </div>
-    <div class="buttons">
+    <div class="buttons" style="display: flex;">
       <i v-if=!inDetailMode>
         <router-link :to="{ path: `/post/${post._id}` }" class="comment-link">
           <IconCommunity />
@@ -92,8 +96,12 @@ const formatLikes = (likes) => {
       <i class="like" @click="toggleHeart">
         <IconHeart :class="{ filled: isHeartFilled }" />
       </i>
-      <span class="counter" :class="counterClass">{{ formatLikes(likeCounter) }}
+      <span class="counter" :class="counterClass" v-if="likeRegistered">{{ formatLikes(likeCounter) }}
       <span class="counter-full">{{ likeCounter }}</span></span>
+      <div class="loading-container">
+            <v-progress-circular indeterminate v-if="!likeRegistered"
+                style="position: relative; bottom: 2.5px;text-align: center; width: 20px; padding-bottom: 6px; margin-left: 2px;"></v-progress-circular>
+        </div>
     </div>
   </div>
   <br>

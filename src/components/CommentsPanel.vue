@@ -15,13 +15,17 @@ const comment = ref(''); // typed in text area
 const CommentsOpen = ref(false);
 const btnLoadingState = ref(false);
 const postId = ref('');
+const loaded = ref(false);
 
 onMounted(async () => {
     postId.value = route.params.id; // Get the post ID from route parameters
+    loaded.value = false;
     try {
         comments.value = await fetchPostComments(postId.value); // Fetch the post
     } catch (error) {
         console.error('Error fetching post:', error);
+    } finally{
+        loaded.value = true;
     }
 });
 
@@ -70,7 +74,11 @@ const submitComment = async () => {
         </div>
 
         <br>
-        <div class="comment-section">
+        <div class="loading-container">
+            <v-progress-circular indeterminate v-if="!loaded"
+                style="display: block; text-align: center;"></v-progress-circular>
+        </div>
+        <div class="comment-section" v-if="loaded">
             <Comment v-for="comment in comments">
                 <template #icon>
                     <IconCommunity style="padding-top: 3px"></IconCommunity>
@@ -86,6 +94,12 @@ const submitComment = async () => {
 </template>
 
 <style lang="css" scoped>
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
 .new-comment {
     display: block;
     position: relative;
