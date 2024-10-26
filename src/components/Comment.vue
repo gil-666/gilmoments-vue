@@ -28,6 +28,7 @@
   border-color: rgb(32, 32, 32);
   border-right: 0px;
   border-style: solid;
+  width: auto;
   word-break: break-all;
 }
 .comment-info{
