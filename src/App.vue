@@ -7,8 +7,7 @@ import { fetchOnlineUsers } from './service/AppService';
 
 var socket = ref(null);
 var useronline = ref(null);
-const apiUrl = import.meta.env.VITE_API_URL;
-const wssUrl = import.meta.env.VITE_WSS_URL;
+const apiUrl = await import.meta.env.VITE_API_URL;
 
 const userCountRoutine = async () => {
   const response = await fetchOnlineUsers();
