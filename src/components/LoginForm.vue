@@ -134,7 +134,7 @@ const removeSpaces = () => { //no space for usernames
 
     /* position: fixed; */
     text-align: start;
-    padding: 80px;
+    /* padding: 80px; */
     z-index: 3;
     background: fixed;
     /* background-color: hsla(0, 0%, 8%, 0.911); */
