@@ -30,19 +30,22 @@ const props = defineProps({
                 <span :class="['return-label', { 'no-hover': showReturn }]">regresar a inicio</span>
             </a>
         </div>
-
-        <HeaderLink href="https://github.com/gil-666/gilmoments-vue">
+        <div class="links">
+            <HeaderLink href="https://github.com/gil-666/gilmoments-vue">
             <template #button>source</template>
         </HeaderLink>
         <HeaderLink href="/contact">
             <template #button>contacto</template>
         </HeaderLink>
-        <HeaderLink href="https://github.com/gil-666/GilMessenger">
+        <!-- <HeaderLink href="https://github.com/gil-666/GilMessenger">
             <template #button>gilmessenger</template>
-        </HeaderLink>
+        </HeaderLink> -->
         <HeaderLink href="/login">
             <template #button>iniciar sesion</template>
         </HeaderLink>
+        </div>
+
+        
         <!-- <HeaderLink>
             <template #button>Alerta</template>
         </HeaderLink> -->
@@ -79,6 +82,9 @@ const props = defineProps({
     border-radius: 10px;
     display: flex;
     justify-content: center;
+}
+.links{
+    display: inline-flex;
 }
 @media (prefers-color-scheme: light){
     .user-counter{

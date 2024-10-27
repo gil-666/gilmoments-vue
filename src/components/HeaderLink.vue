@@ -11,3 +11,8 @@
         }
     })
 </script>
+<style lang="css" scoped>
+.top-link{
+    display: inline-flex;
+}
+</style>
